@@ -1,27 +1,27 @@
 import cosas.*
 
 object camion {
-	const property cosas = #{} // Siendo cosas un tipo set, no admite repetidos
+	const property cosas = #{} // Si bien un tipo Set no admite repetidos, se pide que no cargue teniendo
 	
 	method contieneA(unaCosa) = cosas.contains(unaCosa)
 
 	method cargar(unaCosa) {
-		// Necesito que no lo tenga
-		if (not self.contieneA(unaCosa)) {
-			cosas.add(unaCosa)
-		} else {
-			self.error("La cosa ya está en el camion, no se puede volver a agregar!")
-		}
+		self.validarEstadoCarga(unaCosa, false)
+        cosas.add(unaCosa)
 	}
 
 	method descargar(unaCosa) {
-		self.validarQueContiene(unaCosa)
-		cosas.remove(unaCosa)
+		self.validarEstadoCarga(unaCosa, true)
+        cosas.remove(unaCosa)
 	}
 
-	method validarQueContiene(unaCosa) {
-		if (not self.contieneA(unaCosa) ) {
-			self.error("La cosa no está en el camion")
-		}
-	}
+	method validarEstadoCarga(unaCosa, deberiaEstarCargada) {
+        if (self.contieneA(unaCosa) != deberiaEstarCargada) {
+            if (deberiaEstarCargada) {
+                self.error("La cosa no está en el camion")
+            } else {
+                self.error("La cosa ya está en el camion, no se puede volver a agregar!")
+            }
+        }
+    }
 }

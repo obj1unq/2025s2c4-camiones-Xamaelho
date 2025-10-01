@@ -1,0 +1,55 @@
+import camion.*
+import cosas.*
+
+describe "Camion carga bumblebee y knightRider" {
+    test "Camion esta descargado" {
+        // se podria hacer un metodo estaVacio() en camion, en este caso no se pidio
+        assert.equals(false, camion.contieneA(knightRider))
+        assert.equals(false, camion.contieneA(arenaAGranel))
+        assert.equals(false, camion.contieneA(bumblebee))
+        assert.equals(false, camion.contieneA(paqueteDeLadrillos))
+        assert.equals(false, camion.contieneA(bateriaAntiaerea))
+        assert.equals(false, camion.contieneA(residuosRadiactivos))
+    }
+    test "A camion vacio se le carga Bumblebee y no tiene otra cosa" {
+        camion.cargar(bumblebee)
+        assert.equals(true, camion.contieneA(bumblebee))
+        assert.equals(false, camion.contieneA(knightRider))
+        assert.equals(false, camion.contieneA(arenaAGranel))
+        assert.equals(false, camion.contieneA(paqueteDeLadrillos))
+        assert.equals(false, camion.contieneA(bateriaAntiaerea))
+        assert.equals(false, camion.contieneA(residuosRadiactivos))
+    }
+    test "A camion vacio se le carga Bumblebee y Knight Rider" {
+        camion.cargar(bumblebee)
+        camion.cargar(knightRider)
+        assert.equals(true, camion.contieneA(bumblebee))
+        assert.equals(true, camion.contieneA(knightRider))
+        assert.equals(false, camion.contieneA(arenaAGranel))
+        assert.equals(false, camion.contieneA(paqueteDeLadrillos))
+        assert.equals(false, camion.contieneA(bateriaAntiaerea))
+        assert.equals(false, camion.contieneA(residuosRadiactivos))
+    }
+    test "A camion cargado con Bumblebee y Knight Rider se le descarga Bumblebee y solo queda Knight Rider" {
+        camion.cargar(bumblebee)
+        camion.cargar(knightRider)
+        camion.descargar(bumblebee)
+        assert.equals(true, camion.contieneA(knightRider))
+        assert.equals(false, camion.contieneA(bumblebee))
+        assert.equals(false, camion.contieneA(arenaAGranel))
+        assert.equals(false, camion.contieneA(paqueteDeLadrillos))
+        assert.equals(false, camion.contieneA(bateriaAntiaerea))
+        assert.equals(false, camion.contieneA(residuosRadiactivos))
+    }
+    test "En un camion que carga Knight Rider, se le intenta cargar Knight Rider nuevamente y da error" {
+        camion.cargar(knightRider)
+        assert.equals(true, camion.contieneA(knightRider))
+        assert.throwsExceptionWithMessage("La cosa ya está en el camion, no se puede volver a agregar!", { camion.cargar(knightRider) })
+    }
+    test "En un camion que carga Knight Rider, se intenta descargar Bumblebee y da error" {
+        camion.cargar(knightRider)
+        assert.equals(true, camion.contieneA(knightRider))
+        assert.throwsExceptionWithMessage("La cosa no está en el camion", { camion.descargar(bumblebee) })
+    }
+
+}
