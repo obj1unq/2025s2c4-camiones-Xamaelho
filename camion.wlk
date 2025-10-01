@@ -7,6 +7,9 @@ object camion {
 	method todosLosPesosSonPares() {
 		return cosas.all( { cosa => cosa.tienePesoPar() } )
 	}
+	method hayAlgunoQuePesa(peso) {
+		return cosas.any( {cosa => cosa.peso() == peso } )
+	}
 
 	method cargar(unaCosa) {
 		self.validarEstadoCarga(unaCosa, false)

@@ -89,3 +89,20 @@ describe "Saber si el peso de cada uno de los objetos cargados en un camion es u
         assert.equals(false, camion.todosLosPesosSonPares())
     }
 }
+
+describe "Un camion cargado contesta si tiene la cantidad solicitada" {
+    method initialize() {
+        camion.cargar(bumblebee)
+        arenaAGranel.peso(50)
+        camion.cargar(arenaAGranel)
+    }
+    test "Se pregunta si hay algo que pesa 50 y responde que true (la arena)" {
+        assert.equals(true, camion.hayAlgunoQuePesa(50))
+    }
+    test "Se pregunta si hay algo que pesa 800 y responde que true (Bumblebee)" {
+        assert.equals(true, camion.hayAlgunoQuePesa(800))
+    }
+    test "Se pregunta si hay algo que pesa 500 y responde false" {
+        assert.equals(false, camion.hayAlgunoQuePesa(500))
+    }
+}
