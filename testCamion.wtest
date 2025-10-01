@@ -53,3 +53,39 @@ describe "Camion carga bumblebee y knightRider" {
     }
 
 }
+
+describe "Inicial: Saber si el peso de cada uno de los objetos es un número par." {
+    test "Knight Rider tiene un peso de numero par" {
+        assert.equals(true, knightRider.tienePesoPar())
+    }
+    test "La arena a granel tiene un peso de numero par" {
+        assert.equals(true, arenaAGranel.tienePesoPar())
+    }
+    test "Bumblebee tiene un peso de numero par" {
+        assert.equals(true, bumblebee.tienePesoPar())
+    }
+    test "El paquete de ladrillos tiene un peso de numero par" {
+        assert.equals(true, paqueteDeLadrillos.tienePesoPar())
+    }
+    test "La bateria antiaerea tiene un peso de numero par" {
+        assert.equals(true, bateriaAntiaerea.tienePesoPar())
+    }
+    test "Los residuos radiactivos tiene un peso de numero par" {
+        assert.equals(true, residuosRadiactivos.tienePesoPar())
+    }
+}
+
+describe "Saber si el peso de cada uno de los objetos cargados en un camion es un número par" {
+    test "Para un camión cargado con Bumblebee y 50 kg de arena a granel todo peso es par" {
+        camion.cargar(bumblebee)
+        arenaAGranel.peso(50)
+        camion.cargar(arenaAGranel)
+        assert.equals(true, camion.todosLosPesosSonPares())
+    }
+    test "Para un camión cargado con Bumblebee y 50 kg de arena a granel todo peso NO es par" {
+        camion.cargar(bumblebee)
+        arenaAGranel.peso(51)
+        camion.cargar(arenaAGranel)
+        assert.equals(false, camion.todosLosPesosSonPares())
+    }
+}

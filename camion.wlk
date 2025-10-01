@@ -4,6 +4,9 @@ object camion {
 	const property cosas = #{} // Si bien un tipo Set no admite repetidos, se pide que no cargue teniendo
 	
 	method contieneA(unaCosa) = cosas.contains(unaCosa)
+	method todosLosPesosSonPares() {
+		return cosas.all( { cosa => cosa.tienePesoPar() } )
+	}
 
 	method cargar(unaCosa) {
 		self.validarEstadoCarga(unaCosa, false)
