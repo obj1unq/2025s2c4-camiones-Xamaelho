@@ -1,6 +1,6 @@
 object knightRider {
 	var property peso = 500
-	method peso() { return 500 }
+	method peso() { return peso }
 	method nivelPeligrosidad() { return 10 }
 
 	method peso(_peso) {
