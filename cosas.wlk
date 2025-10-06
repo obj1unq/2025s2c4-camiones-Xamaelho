@@ -9,10 +9,17 @@ object knightRider {
 
 
 	method peso(_peso) {
+		self.validarElPesoIngresado(_peso)
 		peso = 500
 	}
 
 	method afectarPorAccidente() {	}
+
+	method validarElPesoIngresado(pesoNuevo) {
+		if (not (pesoNuevo >= 0) ) {
+			self.error("El peso ingresado es negativo.")
+		}
+	}
 }
 
 object arenaAGranel {
@@ -24,11 +31,18 @@ object arenaAGranel {
 	method bultosQueRequiere() = 1
 
 	method peso(_peso) {
+		self.validarElPesoIngresado(_peso)
 		peso = _peso
 	}
 
 	method afectarPorAccidente() {
 		peso = peso + 20
+	}
+
+	method validarElPesoIngresado(pesoNuevo) {
+		if (not (pesoNuevo >= 0) ) {
+			self.error("El peso ingresado es negativo.")
+		}
 	}
 }
 
@@ -40,8 +54,10 @@ object bumblebee {
 	method tienePesoPar() = (self.peso() % 2) == 0
 	method bultosQueRequiere() = 2
 	method transformacion() = transformacion
+	method tieneTransformacion(tipoTransformacion) = transformacion == tipoTransformacion
 
 	method peso(_peso) {
+		self.validarElPesoIngresado(_peso)
 		peso = 800
 	}
 
@@ -49,15 +65,19 @@ object bumblebee {
 		transformacion = _transformacion
 	}
 
-	method tieneTransformacion(tipoTransformacion) = transformacion == tipoTransformacion
-
-	method afectarPorAccidentePorAccidente() {
+	method afectarPorAccidente() {
         transformacion = if ( self.tieneTransformacion(transformacionAuto) ) {
                 transformacionRobot 
             } else { 
                 transformacionAuto 
             }
     }
+
+	method validarElPesoIngresado(pesoNuevo) {
+		if (not (pesoNuevo >= 0) ) {
+			self.error("El peso ingresado es negativo.")
+		}
+	}
 }
 
 object paqueteDeLadrillos {
@@ -70,21 +90,28 @@ object paqueteDeLadrillos {
 		var bultos = 1
 		if (cantLadrillos > 100 && cantLadrillos <= 300) {
 			bultos = 2
-		} else {
+		} else if (cantLadrillos > 300){
 			bultos = 3
 		}
 		return bultos
 	}
 
 	method cantLadrillos(_cantLadrillos) {
+		self.validarCantidadDeLadrillos(_cantLadrillos)
 		cantLadrillos = _cantLadrillos
 	}
 
-	method afectarPorAccidente(_afectarPorAccidente) {
-		cantLadrillos = if (self.cantLadrillos() > 12) {
+	method afectarPorAccidente() {
+		if (self.cantLadrillos() > 12) {
 			cantLadrillos = cantLadrillos - 12
 		} else {
 			cantLadrillos = 0
+		}
+	}
+
+	method validarCantidadDeLadrillos(cant) {
+		if (not (cant >= 0) ) {
+			self.error("La cantidad de ladrillos ingresados es negativa.")
 		}
 	}
 }
@@ -136,11 +163,18 @@ object residuosRadiactivos {
 	method bultosQueRequiere() = 1
 
 	method peso(_peso) {
+		self.validarElPesoIngresado(_peso)
 		peso = _peso
 	}
 
 	method afectarPorAccidente() {
 		peso = peso + 15
+	}
+
+	method validarElPesoIngresado(pesoNuevo) {
+		if (not (pesoNuevo >= 0) ) {
+			self.error("El peso ingresado es negativo.")
+		}
 	}
 }
 
@@ -153,7 +187,7 @@ object transformacionRobot {
 }
 
 // ################## COSAS DE PUNTOS POSTERIORES ##################
-object contenedorProntuario {
+object contenedorPortuario {
 	const property cosas = #{}
 	
 	method peso() { 
@@ -193,7 +227,7 @@ object contenedorProntuario {
 	
 }
 
-object embalajeSeguridad {
+class EmbalajeSeguridad {
 	var property paquete = envolturaVacia
 	
 	method peso() { return paquete.peso() }
@@ -201,10 +235,10 @@ object embalajeSeguridad {
 	method tienePesoPar() = (self.peso() % 2) == 0
 	method bultosQueRequiere() = 2
 
-	method empaquetar(unaCosa) {
+	method envolver(unaCosa) {
 		paquete = unaCosa
 	}
-	method desempaquetar() {
+	method desenvolver() {
 		paquete = envolturaVacia
 	}
 
@@ -213,8 +247,8 @@ object embalajeSeguridad {
 
 object envolturaVacia {
 
-	method peso() { return 0 }
-	method nivelPeligrosidad() { return 0 }
+	method peso() = 0 
+	method nivelPeligrosidad() = 0 
 	method tienePesoPar() = (self.peso() % 2) == 0
 
 }

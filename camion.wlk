@@ -26,12 +26,11 @@ object camion {
 	method estaExcedido() = self.pesoTotal() > self.pesoMaximo()
 
 	method puedeCircularEnRutaDePeligrosidadHasta(peligrosidadMaxima) {
-		return (not self.estaExcedido()) && ( #{} == self.cosasQueSuperanPeligrosidad(peligrosidadMaxima) )
+		return (not self.estaExcedido()) && 
+			   (not cosas.any({ cosa => self.superaPeligrosidad(cosa, peligrosidadMaxima) }))
 	}
 
-	method hayAlgoQuePeseEntre(minimo, maximo) {
-		return cosas.any({ cosa => cosa.peso() > minimo && cosa.peso() < maximo }) 
-	}
+	method hayAlgoQuePeseEntre(minimo, maximo) = cosas.any({ cosa => cosa.peso().between(minimo, maximo) }) 
 
 	method loMasPesado() {
 		if (cosas.isEmpty()) {
@@ -56,11 +55,15 @@ object camion {
 	}
 	method cosasQueSeanMasPeligrosasQue(talCosa) {
 		const nivelBuscado = talCosa.nivelPeligrosidad()
-    	return cosas.filter( { cosa => self.superaPeligrosidad(cosa, nivelBuscado) } )
+    	return self.cosasQueSuperanPeligrosidad(nivelBuscado) //cosas.filter( { cosa => self.superaPeligrosidad(cosa, nivelBuscado) } )
 	}
 	// ############### SOBRE LAS COSAS ###################
 	method contieneA(unaCosa) = cosas.contains(unaCosa)
-	method totalBultos() {}
+	method totalBultos() {
+		var bultos = 0
+		cosas.forEach( { cosa => bultos = bultos + cosa.bultosQueRequiere() } )
+		return bultos
+	}
 
 	method estaAccidentado(_estaAccidentado) {
 		estaAccidentado = _estaAccidentado
@@ -100,7 +103,7 @@ object camion {
 	method transportar(destino, camino) {
 		self.validarSiPuedeTransitarEnRuta(camino)
 		cosas.forEach( { 
-			cosa => cosa.descargar(cosa)
+			cosa => self.descargar(cosa)
 			destino.colocar(cosa) } )
 	}
 
